@@ -1,0 +1,37 @@
+
+class Fluid:
+    def __init__(self)
+        # fluid properties from part A of design Tables
+
+    def __str__(self):
+        return str(properties)
+
+class Pipe:
+    def __init__(self, type):
+
+
+class Exchanger:
+    def __init__(self, design)
+        self.hot = Fluid(args)
+        self.cold = Fluid(args)
+        self.ODP = Pipe(args) # outer pipe diameter
+        self.IDP =  Pipe(args) # inner pipe diameter
+        a_null = # calculate pipe area
+        self.nusselt = # attain from fluid properties
+        self.convection = # attain from fluid properties
+
+    def stats(self):
+        # do calculation
+
+
+    def __str__(self):
+        return stats
+
+
+def main()
+    print(options)
+    if option = add_exchanger:
+        fluid_args = input()
+        pipe_args = input()
+        data.add(exchanger(*args,fluid_args,pipe_args))
+
