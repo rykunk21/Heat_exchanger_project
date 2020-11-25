@@ -8,7 +8,8 @@ class Fluid:
 
 class Pipe:
     def __init__(self, type):
-
+        self.OD = type[od]
+        
 
 class Exchanger:
     def __init__(self, design)
