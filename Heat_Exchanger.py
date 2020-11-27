@@ -7,9 +7,10 @@ import random
 
 
 class Fluid:
-    def __init__(self, name, temperature, specific_heat, kinematic_viscosity,
+    def __init__(self, name, density, temperature, specific_heat, kinematic_viscosity,
                  thermal_conductivity, prandtl):
         self.name = name
+        self.density = density
         self.temperature = temperature
         self.specific_heat = specific_heat
         self.kinematic_viscosity = kinematic_viscosity
@@ -18,24 +19,25 @@ class Fluid:
 
 
 class Pipe:
-    def __init__(self, type, length):
-        self.ODiameter = pipe_diameter(type, 'ODiameter')
-        self.IDiameter = pipe_diameter(type, 'IDiameter')
+    def __init__(self, pipe_type, length):
+        self.ODiameter = pipe_diameter(pipe_type, 'ODiameter')
+        self.IDiameter = pipe_diameter(pipe_type, 'IDiameter')
         self.length = length
 
 
 class AnnularPipe(Pipe):
-    def __init__(self, type, length, tubular_OD=None):
-        super().__init__(type, length)
-        IDP = self.IDiameter
-        if tubular_OD:
+    def __init__(self, pipe_type, length, tubular_OD=None):
+        super().__init__(pipe_type, length)
+        # IDP = self.IDiameter
+        IDP = .1674         # todo: elim hard code
+        if tubular_OD:      # todo: fucking watch this its gonna throw an error
             ODP = tubular_OD
             self.flow_area = (math.pi * ((IDP ** 2)-(ODP ** 2))) / 4
 
 
 class TubularPipe(Pipe):
-    def __init__(self, type, length):
-        super().__init__(type, length)
+    def __init__(self, pipe_type, length):
+        super().__init__(pipe_type, length)
         IDP = self.IDiameter
         self.flow_area = (math.pi * (IDP ** 2)) / 4
 
@@ -67,8 +69,34 @@ class Exchanger:     # todo: automatically route fluid to annular or tubular
         # variables to change
         self.hot_fluid.outlet_temp = None
         self.cold_fluid.outlet_temp = None
-        self.hot_fluid.velocity = None
-        self.cold_fluid.velocity = None
+
+
+        # init flow area depending on which side has higher flow_area
+        if self.tubular.flow_area > self.annular.flow_area:
+            if self.hot_flow >= self.cold_flow:
+                self.hot_fluid.velocity = self.hot_flow / (
+                        self.hot_fluid.density * self.tubular.flow_area)
+                self.cold_fluid.velocity = self.cold_flow / (
+                        self.cold_fluid.density * self.annular.flow_area)
+            elif self.hot_flow < self.cold_flow:
+                self.hot_fluid.velocity = self.hot_flow / (
+                        self.hot_fluid.density * self.annular.flow_area)
+                self.cold_fluid.velocity = self.cold_flow / (
+                        self.cold_fluid.density * self.tubular.flow_area)
+
+        elif self.tubular.flow_area < self.annular.flow_area:
+            if self.hot_flow >= self.cold_flow:
+                self.hot_fluid.velocity = self.hot_flow / (
+                        self.hot_fluid.density * self.annular.flow_area)
+                self.cold_fluid.velocity = self.cold_flow / (
+                        self.cold_fluid.density * self.tubular.flow_area)
+            elif self.hot_flow < self.cold_flow:
+                self.hot_fluid.velocity = self.hot_flow / (
+                        self.hot_fluid.density * self.tubular.flow_area)
+                self.cold_fluid.velocity = self.cold_flow / (
+                        self.cold_fluid.density * self.annular.flow_area)
+        else:
+            print('yea bro idk')
 
         # coefficients
         self.r = None
@@ -82,7 +110,6 @@ class Exchanger:     # todo: automatically route fluid to annular or tubular
         T = self.hot_fluid.temperature
         t = self.cold_fluid.temperature
         e = self.exchanger_coefficient
-
 
     def outlet_temps(self):
         print(self.hot_fluid.outlet_temp)
@@ -127,7 +154,7 @@ class Exchanger:     # todo: automatically route fluid to annular or tubular
 
 def flow_rate(side):    # todo: can we make this better?
     if side.lower() == 'hot':
-        return 30000
+        return 1.38
     elif side.lower() == 'cold':
         return 5000
 
@@ -154,13 +181,9 @@ def pipe_diameter(type, value):
     return pipes[value][type]
 
 
-def nusselt():
-    pass
-
-
 def build_exchanger():
-    hot = Fluid('Water', 'Hot Density', None, None, None, None)
-    cold = Fluid('Ethanol', 'Cold Density', None, None, None, None)
+    hot = Fluid('Water', 61.8, 'Hot Density', None, None, None, None)
+    cold = Fluid('Ethanol', 68, 'Cold Density', None, None, None, None)
     pipe_length = 24
     tubular = TubularPipe('M', pipe_length)
     annular = AnnularPipe('M', pipe_length, tubular.ODiameter)
@@ -183,7 +206,7 @@ def build_data(iterations):
 def main():
 
     exchanger = build_exchanger()
-    print(exchanger)
+    print(exchanger.hot_fluid.velocity)
 
 
 if __name__ == '__main__':
