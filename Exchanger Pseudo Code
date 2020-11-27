@@ -8,31 +8,83 @@ class Fluid:
 
 class Pipe:
     def __init__(self, type):
-        self.OD = type[od]
+        self.OD = pipe_diameter(args)
+        self.ID = pipe_diameter(args)
         
 
 class Exchanger:
-    def __init__(self, design)
-        self.hot = Fluid(args)
-        self.cold = Fluid(args)
-        self.ODP = Pipe(args) # outer pipe diameter
-        self.IDP =  Pipe(args) # inner pipe diameter
-        a_null = # calculate pipe area
-        self.nusselt = # attain from fluid properties
-        self.convection = # attain from fluid properties
+    def __init__(self, hot_fluid, cold_fluid, pipe, exchanger_type):
+        self.hotflow = flowrate('Hot')
+        self.coldflow = flowrate('Cold')
+        self.hot_fluid = hot_fluid
+        self.cold_fluid = cold_fluid
+        self.temp = self.cold_fluid.temperature
+        self.pipe = pipe
+        self.type = exchanger_type
 
     def stats(self):
         # do calculation
 
-
     def __str__(self):
         return stats
+
+def build_exchanger(defaults):
+    hot_fluid = Fluid(args)
+    cold_fluid = Fluid(args)
+    pipe = Pipe(args)
+    exchanger = Exchanger(hot_fluid, cold_fluid)
+
+
+def pipe_diameter(type, value):
+    pipes =
+
+    {'ODiameter':
+        {
+        2: 'Out Type 2',
+        3: 'Out Type 3',
+        4: 'Out Type 4'
+         },
+     'IDiameter':
+         {
+         2: 'In Type 2',
+         3: 'In Type 3',
+         4: 'In Type 4'
+          }
+    }
+    return pipes[value][type]
+
+
+def flowrate(side):
+
+    # from project description. Can change if design limits are altered
+
+    if side is hot:
+        return hotflow
+    else:
+        return coldflow
+
+def data
+
+    def get data(iterations):
+        for i in range(iterations):
+            data.add(build_exchanger)
+
+        data[exchanger] = {number: [attributes]}
+
+    def compare data
+        for line in sorted(data[10])
+            print(exchanger)
+
+
+    def
 
 
 def main()
     print(options)
-    if option = add_exchanger:
+    if option = build_exchanger:
         fluid_args = input()
         pipe_args = input()
-        data.add(exchanger(*args,fluid_args,pipe_args))
+        build_exchanger
+
+
 
