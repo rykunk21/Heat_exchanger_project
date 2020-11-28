@@ -36,22 +36,10 @@ def build_exchanger(defaults):
 
 
 def pipe_diameter(type, value):
-    pipes =
+    """
 
-    {'ODiameter':
-        {
-        2: 'Out Type 2',
-        3: 'Out Type 3',
-        4: 'Out Type 4'
-         },
-     'IDiameter':
-         {
-         2: 'In Type 2',
-         3: 'In Type 3',
-         4: 'In Type 4'
-          }
-    }
-    return pipes[value][type]
+
+    """
 
 
 def flowrate(side):
@@ -62,6 +50,7 @@ def flowrate(side):
         return hotflow
     else:
         return coldflow
+
 
 def data
 

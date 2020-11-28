@@ -4,6 +4,7 @@
 """
 import math
 import random
+import csv
 
 
 class Fluid:
@@ -19,15 +20,15 @@ class Fluid:
 
 
 class Pipe:
-    def __init__(self, pipe_type, length):
-        self.ODiameter = pipe_diameter(pipe_type, 'ODiameter')
-        self.IDiameter = pipe_diameter(pipe_type, 'IDiameter')
+    def __init__(self, pipe_type, direction, length):
+        self.ODiameter = pipe_diameter(pipe_type, direction)
+        self.IDiameter = pipe_diameter(pipe_type, direction)
         self.length = length
 
 
 class AnnularPipe(Pipe):
-    def __init__(self, pipe_type, length, tubular_OD=None):
-        super().__init__(pipe_type, length)
+    def __init__(self, pipe_type, direction, length, tubular_OD=None):
+        super().__init__(pipe_type, direction, length)
         # IDP = self.IDiameter
         IDP = .1674         # todo: elim hard code
         if tubular_OD:      # todo: fucking watch this its gonna throw an error
@@ -36,13 +37,13 @@ class AnnularPipe(Pipe):
 
 
 class TubularPipe(Pipe):
-    def __init__(self, pipe_type, length):
-        super().__init__(pipe_type, length)
+    def __init__(self, pipe_type, length, direction):
+        super().__init__(pipe_type, length, direction)
         IDP = self.IDiameter
         self.flow_area = (math.pi * (IDP ** 2)) / 4
 
 
-class Exchanger:     # todo: automatically route fluid to annular or tubular
+class Exchanger:
     """
     T2 =  T * (R - 1) - R * t * (1 - e)
          -----------------------------------
@@ -69,7 +70,6 @@ class Exchanger:     # todo: automatically route fluid to annular or tubular
         # variables to change
         self.hot_fluid.outlet_temp = None
         self.cold_fluid.outlet_temp = None
-
 
         # init flow area depending on which side has higher flow_area
         if self.tubular.flow_area > self.annular.flow_area:
@@ -153,6 +153,7 @@ class Exchanger:     # todo: automatically route fluid to annular or tubular
 
 
 def flow_rate(side):    # todo: can we make this better?
+    # these values are in different units
     if side.lower() == 'hot':
         return 1.38
     elif side.lower() == 'cold':
@@ -163,7 +164,7 @@ def convection(side):  # todo
     return 1
 
 
-def pipe_diameter(type, value):
+def pipe_diameter(pipe_type, direction):
     """
     choose the pipe diameter by type
 
@@ -171,6 +172,16 @@ def pipe_diameter(type, value):
     :param value: str()
     :return: float()
     """
+    if direction == 'Annular':
+        pass
+    elif direction == 'Tubular':
+        pass
+
+    with open('pipe_sizes.csv', 'r') as fp:
+        lines = csv.reader(fp)
+
+    for line in lines:
+        print(line)
 
 
     pipes = {'ODiameter':
@@ -178,7 +189,6 @@ def pipe_diameter(type, value):
              'IDiameter':
                 {'M': .1076}
              }
-    return pipes[value][type]
 
 
 def build_exchanger():
