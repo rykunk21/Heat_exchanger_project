@@ -48,6 +48,7 @@ def e_coeff(counter, R, Mc, Cpc):
 def counterflow(hot, T, t, R):
     """ This function computes the heat exchange for a counterflow design """
     e = e_coeff(True, 3.66, 30000, 0.608)
+
     T2 = round((T * (R - 1) - R * t * (1 - 1.375)) / (
               (R * e) - 1), 1)
     if hot:

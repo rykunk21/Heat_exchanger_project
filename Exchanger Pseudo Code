@@ -36,10 +36,21 @@ def build_exchanger(defaults):
 
 
 def pipe_diameter(type, value):
-    """
+    open pipe sizes
+    data = dict()
+
+    for line in lines:
+        data[line[0]] = {
+            'ID': line[1]
+            ''
+        }
 
 
-    """
+
+def start(self):
+    T = hot_fluid.temperature
+    t = cold fluid temp
+    e = exchanger coeff
 
 
 def flowrate(side):
