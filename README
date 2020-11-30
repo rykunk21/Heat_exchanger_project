@@ -1,0 +1,11 @@
+This is the code to complete Michigan State's EGR100 project 2
+All the code is original except for line 400 which came from stack overflow 
+because I was having a hard time sorting a dictionary with string keys
+and tuples of objects. While I am familiar with using lambda expressions
+it was new for me to use a lambda expression in order to sort a dictionary,
+cool!
+
+At the end of the day this project was less about EGR100 and more about me
+challenging myself in a program that was out of my skill level.
+
+Totally spaghetti code. Do not open the file if you cringe at gross code
